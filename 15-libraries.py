@@ -1,4 +1,6 @@
-#!/Users/neal/venv/python-test/bin/python4
+#!/Users/neal/venv/python-test/bin/python
+# coding: utf8
+
 # 2023-09-18
 #
 # 15 Python Libraries You Should Know About in 2023
@@ -171,20 +173,39 @@ def read_root():
 def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
-# 14: SQLModel - interact with SQL databases from Pythong code w/ Python objects
+# 14: SQLModel - interact with SQL databases from Python code w/ Python objects
 # Sqlmodel: https://sqlmodel.tiangolo.com
 # object relational mapping library
 # connect your api to sql/sqlite using python types
+print("\nPython library: sqlmodel\n")
+from typing import Optional
+from sqlmodel import Field, SQLModel
+
+class Hero(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    secret_name: str
+    age: Optional[int] = -1
+
+hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
+hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
+hero_3 = Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48)
+
+# itterate through the list of heros and use a ternary to print if a value exists
+for hero in (hero_1, hero_2, hero_3):
+    print("The hero", hero.name, "is really", hero.secret_name, 
+          "aged " + str(hero.age) + "!" if hero.age > 0 else "\b!")
 
 
+# 15. Httpx: https://github.com/encode/httpx
+# dealing with async requests
+print("\nPython library: httpx\n")
+import httpx
+r = httpx.get('http://checkip.amazonaws.com/')
+print(r, '\n', r.status_code, '\n', r.headers, '\n', r.text)
 
 
-
-# Httpx: https://github.com/encode/httpx
-# Python-dotenv: https://saurabh-kumar.com/python-dotenv/
-
-
-
-
-
-
+# bonus: Python-dotenv: https://saurabh-kumar.com/python-dotenv/
+# Python-dotenv reads key-value pairs from a .env file and can set them as environment variables. 
+# It helps in the development of applications following the 12-factor principles.
+# NOTE: Not working in python@3.11
